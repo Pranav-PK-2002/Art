@@ -1,0 +1,420 @@
+{% extends 'About.html' %}
+{% load static %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* Pricing Start */
+.pricing-item {
+    transition: .5s;
+
+}
+
+.pricing-item:hover {
+    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+    margin: -20px 0 20px 0;
+}
+
+.pricing-label {
+    border-bottom: 20px solid var(--bs-light);
+    border-radius: 0 0 300px 300px;
+    transition: .5s;
+}
+
+.pricing-item:hover .pricing-label {
+    border-color: rgba(0, 0, 0, .5);
+}
+
+.pricing-item:hover .pricing-label.pricing-featured {
+    border-color: rgba(255, 255, 255, .5);
+}
+.razorpay-payment{
+color:white;
+width:90px !important;
+height:38px;
+background-color:#F28123;
+border-color:#F28123;
+border-radius:8px;
+
+}
+		.razorpay-payment:hover
+		{
+		background-color:#051922 !important;
+		border-color:#051922 !important;
+border-radius:8px;
+
+		}
+
+    </style>
+</head>
+<body><!-- Your existing navigation bar code -->
+<nav class="main-menu" >
+  <ul>
+    <li><a href="{% url 'Home_page' %}">Home</a></li>
+    <li class=""><a href="{% url 'About_page' %}">About</a></li>
+    <li><a href="#">Pages</a>
+      <ul class="sub-menu">
+        <li><a href="{% url 'user_painting' %}">Upload paintings</a></li>
+        <li><a href="{% url 'search_painting' %}">Search a painting</a></li>
+		          <li><a href="{% url 'learn_art' %}">classes for art</a></li>
+
+      </ul>
+    </li>
+    <li><a href="{% url 'Contact_page' %}">Contact</a></li>
+    <li><a href="{% url 'Shop' %}">Shop</a></li>
+								   <li>
+									{% for i in user_profile %}
+										<img src="{{ i.profile_image.url }}" style="margin-left:100px;border:2px solid #F28123;object-fit:cover;"
+											 alt="" name="image" class="rounded-circle" height="35px" width="35px">
+									{% empty %}
+										{% if request.session.Username %}
+											<!-- Show default image if user_profile is empty -->
+											<img src="{% static 'Web/assets/img/usericon11.png' %}" style="margin-left:100px;border:2px solid #F28123;display:cover;"
+												 alt="Default Image" name="image" class="rounded-circle" height="35px" width="35px">
+										{% endif %}
+									{% endfor %}
+									{% if request.session.Username %}
+										<span class="userspan">{{request.session.Username}}</span>
+										<i class="bi bi-chevron-down " style="color:#fff;font-weight:bold;margin-left:-10px;"></i>
+										<ul class="sub-menu"  style="margin-left:100px;">
+											<li><a href="{% url 'profile_page' %}">My account</a></li>
+        <li><a href="#" data-toggle="modal" data-target="#logoutModal">Logout</a></li>
+										</ul>
+									{% else %}
+
+								<li>
+											<a href="{% url 'Login_page'%}" class="nav-link">
+												<i class="bi bi-person-plus" style="font-size: 20px;margin-left:30px;"></i>
+											</a>
+										</li>
+									{% endif %}
+								</li>
+    <li>
+      <div class="header-icons">
+        <a class="wishlist-icon" href="{% url 'wishlist' %}"><i class="far fa-heart"></i></a>
+        <a class="shopping-cart" href="{% url 'Cart_page' %}"><i class="fas fa-shopping-cart"></i></a>
+<a class="dropdown-toggle hidden-arrow" style="border: none;" href="#" id="navbarDropdownMenuLink" role="button" data-mdb-dropdown-init data-mdb-ripple-init aria-expanded="false">
+    <i class="fas fa-search"></i> <!-- Search icon -->
+</a>
+<ul class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdownMenuLink" style="background-color: white;">
+    <li>
+        <div class="input-group mt-2 mx-2">
+            <div class="form-outline w-auto" data-mdb-input-init>
+                <input type="search" id="search-input-dropdown" class="form-control" style="width: 280px;" placeholder="Search here" />
+                <label class="form-label" for="search-input-dropdown" style="width: 200px;"></label>
+            </div>
+        </div>
+    </li>
+    {% for painting in paintings %}
+    <li class="dropdown-item" style="display: none;" data-name="{{ painting.pname }}"><a href="{% url 'Single_page' painting.id %}">{{ painting.pname }}</a></li>
+    {% endfor %}
+</ul>
+      </div>
+    </li>
+  </ul>
+</nav>
+						<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+												<div class="mobile-menu"></div>
+
+						<!-- menu end -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end header -->
+
+
+
+<!-- Logout Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                  <h5 class="modal-title" id="logoutModalLabel">
+                    <div style="display: flex; align-items: center;">
+					<i class="fas fa-exclamation-circle" style="margin-right: 6px;margin-top:-2px;"></i>
+                        <div>Are you sure you want to logout ?</div>
+                    </div>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+           <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" style="margin-top:40px !important;" data-dismiss="modal">Cancel</button>
+				&nbsp;
+                <a href="{% url 'user_logout' %}" class="btn btn-primary" style="margin-top:40px !important;">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+	<!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg" style="height:250px;">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p>Get 24/7 Support</p>
+						<h1>Art learning section</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
+<div class="text-center m-5">
+    {% if not  subscribed %}
+    <form id="subscribe-form" method="post" action="{% url 'learn_art_save' %}">
+        <h3>Subscribe here to access the contents.</h3>
+        <input type="hidden" name="username" value="{{ request.session.Username }}">
+        <input type="hidden" id="amount_basic" name="amount_basic" value="250">
+        <input type="hidden" id="amount_standard" name="amount_standard" value="500">
+        <input type="hidden" id="amount_premium" name="amount_premium" value="1000">
+        <input type="hidden" id="package" name="package">
+        <div class="container-fluid py-5">
+            <div class="container py-5">
+                <div class="text-center mb-5 wow fadeInUp" data-wow-delay=".3s">
+                    <h5 class="mb-2 px-3 py-1 text-dark rounded-pill d-inline-block border border-2 border-Warning">Our Pricing</h5>
+                </div>
+                <div class="row g-5">
+                    <div class="col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay=".3s" >
+                        <div class="rounded bg-light pricing-item" style="background-color:#f2f0f0 !important;">
+                            <div class=" py-3 px-5 text-center rounded-top border-bottom border-dark" style="background-color: #F28123;">
+                                <h2 class="m-0" style="color: white;">Basic</h2>
+                            </div>
+                            <div class="px-4 py-5 text-center  pricing-label mb-2" style="background-color: #F28123;">
+                                <h1 class="mb-0" style="color:white; font-size: 30px;">
+									<svg xmlns="http://www.w3.org/2000/svg" width="40" height="33" fill="white" class="bi bi-currency-rupee " style="font-weight: bold;margin-right:-5px;margin-top:-3px;" viewBox="0 0 16 16">
+  <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4z"/>
+</svg>250<span class=" fs-4 fw-normal" style="color:white;">/mo</span></h1>
+                                <p class="mb-0">Basic Package</p>
+                            </div>
+                            <div class="p-4 text-center fs-5" >
+                               <p><i class="fa fa-check text-success me-2"></i>Access to Exclusive Artworks</p>
+<p><i class="fa fa-check text-success me-2"></i>Personalized Art Recommendations</p>
+<p><i class="fa fa-times text-danger me-2"></i>Limited Edition Art Releases</p>
+<p><i class="fa fa-times text-danger me-2"></i>Live Art Demonstrations</p>
+<p><i class="fa fa-times text-danger me-2"></i>Interactive Art Workshops</p>
+
+                                <button class="btn btn-primary razorpay-payment"   data-amount="250" data-package="Basic" data-amount-field-id="amount_basic">pay now </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay=".3s">
+                        <div class="rounded bg-light pricing-item" style="background-color:#f2f0f0 !important;">
+                            <div class=" py-3 px-5 text-center rounded-top border-bottom border-dark" style="background-color: #F28123;">
+                                <h2 class="m-0" style="color: white;">Standard</h2>
+                            </div>
+                             <div class="px-4 py-5 text-center  pricing-label mb-2" style="background-color: #F28123;">
+                                <h1 class="mb-0" style="color:white; font-size: 30px;">
+									<svg xmlns="http://www.w3.org/2000/svg" width="40" height="33" fill="white" class="bi bi-currency-rupee " style="font-weight: bold;margin-right:-5px;margin-top:-3px;" viewBox="0 0 16 16">
+  <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4z"/>
+</svg>500<span class=" fs-4 fw-normal" style="color:white;">/mo</span></h1>
+                                <p class="mb-0">Standard Package</p>
+                            </div>
+                            <div class="p-4 text-center fs-5">
+                            <p><i class="fa fa-check text-success me-2"></i>Access to Exclusive Artworks</p>
+							<p><i class="fa fa-check text-success me-2"></i>Personalized Art Recommendations</p>
+							<p><i class="fa fa-check text-success me-2"></i>Limited Edition Art Releases</p>
+							<p><i class="fa fa-times text-danger me-2"></i>Live Art Demonstrations</p>
+							<p><i class="fa fa-times text-danger me-2"></i>Interactive Art Workshops</p>
+                                <button class="btn btn-primary razorpay-payment"  data-amount="500" data-package="Standard" data-amount-field-id="amount_standard">pay now</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay=".3s">
+                        <div class="rounded bg-light pricing-item" style="background-color:#f2f0f0 !important;">
+                            <div class=" py-3 px-5 text-center rounded-top border-bottom border-dark" style="background-color: #F28123;">
+                                <h2 class="m-0" style="color: white;">Premium</h2>
+                            </div>
+                            <div class="px-4 py-5 text-center  pricing-label mb-2" style="background-color: #F28123;">
+                                <h1 class="mb-0" style="color:white; font-size: 30px;">
+									<svg xmlns="http://www.w3.org/2000/svg" width="40" height="33" fill="white" class="bi bi-currency-rupee " style="font-weight: bold;margin-right:-5px;margin-top:-3px;" viewBox="0 0 16 16">
+  <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4z"/>
+</svg>1000<span class=" fs-4 fw-normal" style="color:white;">/mo</span></h1>
+                                <p class="mb-0">Premium Package</p>
+                            </div>
+                            <div class="p-4 text-center fs-5">
+                                 <p><i class="fa fa-check text-success me-2"></i>Access to Exclusive Artworks</p>
+							<p><i class="fa fa-check text-success me-2"></i>Personalized Art Recommendations</p>
+							<p><i class="fa fa-check text-success me-2"></i>Limited Edition Art Releases</p>
+							<p><i class="fa fa-check text-success me-2"></i>Live Art Demonstrations</p>
+							<p><i class="fa fa-check text-success me-2"></i>Interactive Art Workshops</p>
+
+                                <button class="btn btn-primary razorpay-payment"  data-amount="1000" data-package="Premium" data-amount-field-id="amount_premium">pay now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script>
+       var razorpayButtons = document.querySelectorAll('.razorpay-payment');
+razorpayButtons.forEach(function(button) {
+    button.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        var amount = parseInt(button.getAttribute('data-amount'));
+        var package = button.getAttribute('data-package');
+
+        // Set the selected amount to the hidden input field
+        document.getElementById('package').value = package;
+
+        // Open Razorpay payment window
+        openCheckout(amount);
+    });
+});
+
+function openCheckout(amount) {
+    var options = {
+        key: 'rzp_test_IzIBFTmzd3zzKk',
+        amount: amount * 100, // Amount should be in paise
+        currency: 'INR',
+        name: 'Art Gallery',
+        description: 'A Wild Sheep Chase is the third novel by Japanese author Haruki Murakami',
+        image: 'https://example.com/your_logo.jpg',
+        prefill: {
+            name: '{{ request.user.get_full_name }}',
+            email: '{{ request.user.email }}'
+        },
+        theme: {
+            color: 'blue'
+        },
+        payment_method: ['card', 'upi', 'emi', 'netbanking', 'wallet'],
+        handler: function(response) {
+            // Handle the response from Razorpay
+            console.log(response);
+            // Optionally, you can submit the form with the payment details
+            document.getElementById('subscribe-form').submit();
+        }
+    };
+    var rzp = new Razorpay(options);
+    rzp.open();
+}
+
+        </script>
+    </form>
+
+
+    {% endif %}
+</div>
+
+<div class="latest-news pt-150 pb-150">
+		<div class="container">
+
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="section-title">
+						<h3><span class="orange-text">Discover</span>  Painting Styles"</h3>
+						<p>Step into the world of art with our varied painting methods. From watercolors to digital art, explore each style and unleash your creativity.</p>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-lg-4 col-md-6">
+					<div class="single-latest-news">
+						<a href="single-news.html"><div class="latest-news-bg news-bg-1">
+
+						</div>
+                        </a>
+						<div class="news-text-box text-center">
+							<h3><a href="single-news.html">Water Colour Painting</a></h3>
+							<p class="blog-meta">
+								<span class="author"><i class="fas fa-user"></i> Admin</span>
+								<span class="date"><i class="fas fa-calendar"></i> 10 march, 2024</span>
+							</p>
+							<a href="{% url 'watercolour_painting' %}" class="cart-btn" style="color:white;">click here</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6">
+					<div class="single-latest-news">
+						<a href="single-news.html"><div class="latest-news-bg news-bg-2">
+
+						</div>
+                        </a>
+						<div class="news-text-box text-center">
+							<h3><a href="single-news.html">Digital Painting</a></h3>
+							<p class="blog-meta">
+								<span class="author"><i class="fas fa-user"></i> Admin</span>
+								<span class="date"><i class="fas fa-calendar"></i> 10 march, 2024</span>
+							</p>
+							<a href="{% url 'digital_painting' %}" class="cart-btn" style="color:white;">click here</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0">
+					<div class="single-latest-news">
+						<a href="single-news.html"><div class="latest-news-bg news-bg-3"></div></a>
+						<div class="news-text-box text-center">
+							<h3><a href="single-news.html">Oil Painting</a></h3>
+							<p class="blog-meta">
+								<span class="author"><i class="fas fa-user"></i> Admin</span>
+								<span class="date"><i class="fas fa-calendar"></i> 10 march, 2024</span>
+							</p>
+							<a href="{% url 'oil_painting' %}" class="cart-btn">click here</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6">
+					<div class="single-latest-news">
+						<a href="single-news.html"><div class="latest-news-bg news-bg-4">
+
+						</div>
+                        </a>
+						<div class="news-text-box text-center">
+							<h3><a href="single-news.html">Acrylic Painting</a></h3>
+							<p class="blog-meta">
+								<span class="author"><i class="fas fa-user"></i> Admin</span>
+								<span class="date"><i class="fas fa-calendar"></i> 10 march, 2024</span>
+							</p>
+							<a href="{% url 'acrylic_painting' %}" class="cart-btn" style="color:white;">click here</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6">
+					<div class="single-latest-news">
+						<a href="single-news.html"><div class="latest-news-bg news-bg-5">
+
+						</div>
+                        </a>
+						<div class="news-text-box text-center">
+							<h3><a href="single-news.html">Encaustic Painting</a></h3>
+							<p class="blog-meta">
+								<span class="author"><i class="fas fa-user"></i> Admin</span>
+								<span class="date"><i class="fas fa-calendar"></i> 10 march, 2024</span>
+							</p>
+							<a href="{% url 'encastic_painting' %}" class="cart-btn" style="color:white;">click here</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0">
+					<div class="single-latest-news">
+						<a href="single-news.html"><div class="latest-news-bg news-bg-6"></div></a>
+						<div class="news-text-box text-center">
+							<h3><a href="single-news.html">MixedMedia Painting</a></h3>
+							<p class="blog-meta">
+								<span class="author"><i class="fas fa-user"></i> Admin</span>
+								<span class="date"><i class="fas fa-calendar"></i> 10 march, 2024</span>
+							</p>
+							<a href="{% url 'mixedmedia_painting' %}" class="cart-btn">click here</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+
+</body>
+</html>
+{%endblock%}
