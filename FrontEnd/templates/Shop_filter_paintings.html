@@ -23,6 +23,9 @@
                         <span></span>  
                         <span class="{% if i.status == 'In Stock' %}green-text{% elif i.status == 'Out Of Stock' %}red-text{% endif %}">
                             {{ i.status }}
+                            {% if i.status == 'In Stock' %}
+                                ({{ i.no_copies }} available)
+                            {% endif %}
                         </span>
                     </p>
                     <a href="{% url 'Single_page' p_id=i.id %}" class="cart-btn" style="font-size: 13px !important;">View</a>

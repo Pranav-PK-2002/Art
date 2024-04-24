@@ -67,6 +67,9 @@
 
 						<p class="single-product-pricing"><span class="{% if pro.status == 'In Stock' %}green-text{% elif pro.status == 'Out Of Stock' %}red-text{% endif %}">
 							{{ pro.status }}
+							{% if pro.status == 'In Stock' %}
+								({{ pro.no_copies }} available)
+							{% endif %}
 						</span> ₹ {{pro.price}} /-</p>
 	<div>
     {% if pro.description|length > 420 %}
@@ -160,6 +163,9 @@
 							<span></span>  
 							<span class="{% if painting.status == 'In Stock' %}green-text{% elif painting.status == 'Out Of Stock' %}red-text{% endif %}">
 								{{ painting.status }}
+								{% if painting.status == 'In Stock' %}
+									({{ painting.no_copies }} available)
+								{% endif %}
 							</span>
 						</p>
                         <a href="{% url 'Single_page' p_id=painting.id %}" class="cart-btn" style="font-size: 13px !important;">View</a>

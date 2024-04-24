@@ -511,6 +511,9 @@ background-color: white;
 							<span></span>  
 							<span class="{% if painting.status == 'In Stock' %}green-text{% elif painting.status == 'Out Of Stock' %}red-text{% endif %}">
 								{{ painting.status }}
+								{% if painting.status == 'In Stock' %}
+									({{ painting.no_copies }} available)
+								{% endif %}
 							</span>
 						</p>
                         <a href="{% url 'Single_page' p_id=painting.id %}" class="cart-btn" style="font-size: 13px !important;">View</a>

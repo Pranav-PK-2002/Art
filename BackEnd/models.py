@@ -7,7 +7,7 @@ from django.db import models
 class paintings_Db(models.Model):
     STATUS = (
         ('In Stock', 'In Stock'),
-        ('Out Of Stock', "Out Of Stock"),  
+        ('Out Of Stock', 'Out Of Stock'),  
     )
     username=models.CharField(max_length=20,null=True,blank=True)
     pname = models.CharField(max_length=20, null=True, blank=True)
